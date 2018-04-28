@@ -26,6 +26,7 @@ func createDirIfNotExist(dir string) {
 }
 
 func writeToFile(output []byte) {
+	createDirIfNotExist("./views")
 	outputFileName := strings.Split(fileName, ".")[0]
 	if outputFileName == "index" {
 		err := ioutil.WriteFile("./views/"+outputFileName+".html", output, 0644)
