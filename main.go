@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/gin-contrib/static"
@@ -17,10 +18,24 @@ func check(err error) {
 	}
 }
 
+func createDirIfNotExist(dir string) {
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		err = os.MkdirAll(dir, 0755)
+		check(err)
+	}
+}
+
 func writeToFile(output []byte) {
-	outputFileName := strings.Split(fileName, ".")[0] + ".html"
-	err := ioutil.WriteFile("./views/"+outputFileName, output, 0644)
-	check(err)
+	outputFileName := strings.Split(fileName, ".")[0]
+	if outputFileName == "index" {
+		err := ioutil.WriteFile("./views/"+outputFileName+".html", output, 0644)
+		check(err)
+	} else {
+		dir := "./views/" + outputFileName
+		createDirIfNotExist(dir)
+		err := ioutil.WriteFile(dir+"/index.html", output, 0644)
+		check(err)
+	}
 }
 
 func convertMdToHTML(dat []byte) {
