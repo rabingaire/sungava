@@ -15,7 +15,7 @@ Static site generator build using go
 go run main.go
 ```
 
-* After this go to `localhost:300` you can see your webpage up and running.
+* After this go to `localhost:3000` you can see your webpage up and running.
 
 
 *Note: Project is underdevelopment I want to build sungava something like a Jekyll*
