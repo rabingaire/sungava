@@ -10,7 +10,10 @@ import (
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
-var fileName string
+var (
+	fileName string
+	output   []byte
+)
 
 func check(err error) {
 	if err != nil {
@@ -25,23 +28,28 @@ func createDirIfNotExist(dir string) {
 	}
 }
 
-func writeToFile(output []byte) {
+func writeToFile(path string) {
+	err := ioutil.WriteFile(path, output, 0644)
+	check(err)
+}
+
+func createFolder() {
 	createDirIfNotExist("./views")
 	outputFileName := strings.Split(fileName, ".")[0]
 	if outputFileName == "index" {
-		err := ioutil.WriteFile("./views/"+outputFileName+".html", output, 0644)
-		check(err)
+		path := "./views/" + outputFileName + ".html"
+		writeToFile(path)
 	} else {
 		dir := "./views/" + outputFileName
 		createDirIfNotExist(dir)
-		err := ioutil.WriteFile(dir+"/index.html", output, 0644)
-		check(err)
+		path := dir + "/index.html"
+		writeToFile(path)
 	}
 }
 
 func convertMdToHTML(dat []byte) {
-	output := blackfriday.Run(dat)
-	writeToFile(output)
+	output = blackfriday.Run(dat)
+	createFolder()
 }
 
 func readFiles(fullFilePath string) {
