@@ -33,7 +33,7 @@ func writeToFile(path string) {
 	check(err)
 }
 
-func createFolder() {
+func createViewsFolder() {
 	createDirIfNotExist("./views")
 	outputFileName := strings.Split(fileName, ".")[0]
 	if outputFileName == "index" {
@@ -49,7 +49,7 @@ func createFolder() {
 
 func convertMdToHTML(dat []byte) {
 	output = blackfriday.Run(dat)
-	createFolder()
+	createViewsFolder()
 }
 
 func readFiles(fullFilePath string) {
