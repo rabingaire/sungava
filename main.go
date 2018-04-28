@@ -49,7 +49,7 @@ func readFiles(fullFilePath string) {
 	convertMdToHTML(dat)
 }
 
-func main() {
+func compile() {
 	files, err := ioutil.ReadDir("./markdown")
 	check(err)
 
@@ -58,7 +58,10 @@ func main() {
 		fullFilePath := "./markdown/" + fileName
 		readFiles(fullFilePath)
 	}
+}
 
+func main() {
+	compile()
 	router := gin.Default()
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
 	router.Run(":3000")
